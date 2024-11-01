@@ -55,35 +55,37 @@ local function wrap_widget_with(replacement_text, callback, wrap_type)
 	local req_params = create_req_params(current_bufnr)
 
 	lsp.request("textDocument/codeAction", req_params, function(_, result)
-		if result then
-			for _, code_action in ipairs(result) do
-				if code_action.kind == wrap_type.kind then
-					local file_changes = utils.get_first_value(code_action.edit.changes)
+		if not result then
+			return
+		end
 
-					local range = utils.get_first_value(file_changes).range
-					local newText = utils.get_first_value(file_changes).newText
+		for _, code_action in ipairs(result) do
+			if code_action.kind == wrap_type.kind then
+				local file_changes = utils.get_first_value(code_action.edit.changes)
 
-					if wrap_type.kind == builder.kind then
-						newText = utils.insert_comma_before_closing_brace(newText)
-					end
+				local range = utils.get_first_value(file_changes).range
+				local newText = utils.get_first_value(file_changes).newText
 
-					local replacedText = newText:gsub(wrap_type.pattern, replacement_text)
-
-					utils.replace_range(
-						current_bufnr,
-						range["start"].line,
-						range["start"].character,
-						range["end"].line,
-						range["end"].character,
-						replacedText
-					)
-
-					if callback then
-						callback()
-					end
-
-					return
+				if wrap_type.kind == builder.kind then
+					newText = utils.insert_comma_before_closing_brace(newText)
 				end
+
+				local replacedText = newText:gsub(wrap_type.pattern, replacement_text)
+
+				utils.replace_range(
+					current_bufnr,
+					range["start"].line,
+					range["start"].character,
+					range["end"].line,
+					range["end"].character,
+					replacedText
+				)
+
+				if callback then
+					callback()
+				end
+
+				return
 			end
 		end
 	end)
