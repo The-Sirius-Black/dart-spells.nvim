@@ -14,19 +14,19 @@ return {
 	config = function()
 		local spells = require("dart-spells")
 
-		vim.keymap.set("n", "key", spells.wrap_with_bloc_builder(), {})
+		vim.keymap.set("n", "key", spells.wrap_with_bloc_builder, {})
 
-		vim.keymap.set("n", "key", spells.wrap_with_bloc_consumer(), {})
+		vim.keymap.set("n", "key", spells.wrap_with_bloc_consumer, {})
 
-		vim.keymap.set("n", "key", spells.wrap_with_bloc_listener(), {})
+		vim.keymap.set("n", "key", spells.wrap_with_bloc_listener, {})
 
-		vim.keymap.set("n", "key", spells.wrap_with_bloc_provider(), {})
+		vim.keymap.set("n", "key", spells.wrap_with_bloc_provider, {})
 
-		vim.keymap.set("n", "key", spells.wrap_with_multi_bloc_provider(), {})
+		vim.keymap.set("n", "key", spells.wrap_with_multi_bloc_provider, {})
 
-		vim.keymap.set("n", "key", spells.wrap_with_builder(replacment_text, callback), {})
+		-- vim.keymap.set("n", "key", spells.wrap_with_builder(replacment_text, callback), {})
 
-		vim.keymap.set("n", "key", spells.wrap_with_widget(replacment_text, callback), {})
+		-- vim.keymap.set("n", "key", spells.wrap_with_widget(replacment_text, callback), {})
 	end,
 }
 ```
