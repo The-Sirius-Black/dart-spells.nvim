@@ -1,5 +1,23 @@
 local M = {}
 
+function M.create_req_params(bufnr)
+	local uri = vim.uri_from_bufnr(bufnr)
+	local diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr)
+
+	local params = {
+		textDocument = {
+			uri = uri,
+		},
+		range = vim.lsp.util.make_range_params().range,
+		context = {
+			diagnostics = diagnostics,
+			triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
+		},
+	}
+
+	return params
+end
+
 function M.get_dart_lsp()
 	local clients = vim.lsp.get_active_clients()
 
@@ -17,6 +35,16 @@ function M.get_dart_lsp()
 	end
 
 	return dart_client
+end
+
+function M.table_contains(tble, cb)
+	for k, v in ipairs(tble) do
+		if cb(k, v) then
+			return true
+		end
+	end
+
+	return false
 end
 
 function M.get_first_value(tabl)

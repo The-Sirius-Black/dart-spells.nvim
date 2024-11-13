@@ -10,4 +10,8 @@ M.bloc_provider = "BlocProvider<>(create: (context) => ,"
 
 M.multi_bloc_provider = "MultiBlocProvider(providers: const [],"
 
+M.widget_kind = "refactor.flutter.wrap.generic"
+
+M.builder_kind = "refactor.flutter.wrap.builder"
+
 return M

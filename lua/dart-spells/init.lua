@@ -1,4 +1,4 @@
-local wrap = require("dart-spells.widget_wrapper")
+local wrap = require("dart-spells.widget-wrapper")
 local utils = require("dart-spells.utils")
 local constants = require("dart-spells.constants")
 
@@ -34,6 +34,36 @@ end
 
 function M.wrap_with_widget(replacment_text, callback)
 	wrap.wrap_with_widget(replacment_text, callback)
+end
+
+function M.bloc_code_actions()
+	return {
+		{
+			title = "Wrap with Bloc Builder",
+			action = M.wrap_with_bloc_builder,
+			kind = constants.builder_kind,
+		},
+		{
+			title = "Wrap with Bloc Listener",
+			action = M.wrap_with_bloc_listener,
+			kind = constants.widget_kind,
+		},
+		{
+			title = "Wrap with Bloc Consumer",
+			action = M.wrap_with_bloc_consumer,
+			kind = constants.builder_kind,
+		},
+		{
+			title = "Wrap with Bloc Provider",
+			action = M.wrap_with_bloc_provider,
+			kind = constants.widget_kind,
+		},
+		{
+			title = "Wrap with Multi Bloc Provider",
+			action = M.wrap_with_multi_bloc_provider,
+			kind = constants.widget_kind,
+		},
+	}
 end
 
 return M
