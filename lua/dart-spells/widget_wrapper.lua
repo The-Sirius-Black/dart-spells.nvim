@@ -15,28 +15,17 @@ local builder = {
 }
 
 local function create_req_params(bufnr)
-	local cursor_pos = api.nvim_win_get_cursor(0)
 	local uri = vim.uri_from_bufnr(bufnr)
-	local diagnostics = vim.diagnostic.get(bufnr)
-
-	local range = {
-		["start"] = {
-			line = cursor_pos[1] - 1,
-			character = cursor_pos[2],
-		},
-		["end"] = {
-			line = cursor_pos[1] - 1,
-			character = cursor_pos[2],
-		},
-	}
+	local diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr)
 
 	local params = {
 		textDocument = {
 			uri = uri,
 		},
-		range = range,
+		range = vim.lsp.util.make_range_params().range,
 		context = {
 			diagnostics = diagnostics,
+			triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
 		},
 	}
 
