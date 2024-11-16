@@ -39,6 +39,11 @@ function M.insert_comma_before_closing_brace(input)
 	return input
 end
 
+function M.get_exe_path()
+	local source = debug.getinfo(1, "S").source:sub(2)
+	return vim.fn.fnamemodify(source, ":h:h:h") .. "/bin/dart_spells.exe"
+end
+
 function M.move_cursor_after(char)
 	local bufnr = vim.api.nvim_get_current_buf()
 	local cursor_pos = vim.api.nvim_win_get_cursor(0)

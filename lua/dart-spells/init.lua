@@ -1,8 +1,13 @@
 local wrap = require("dart-spells.widget_wrapper")
 local utils = require("dart-spells.utils")
 local constants = require("dart-spells.constants")
+local copy_with = require("dart-spells.copy-with")
 
 local M = {}
+
+function M.copy_with()
+	copy_with.gen_copy_with()
+end
 
 local function move_cursor_after_angle()
 	utils.move_cursor_after("<")
