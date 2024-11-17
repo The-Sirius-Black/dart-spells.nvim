@@ -55,4 +55,9 @@ function M.gen_props()
 	cmds.get_class_at_cursor(insert_props)
 end
 
+-- For testing purposes
+M.test_remove_existing_props = remove_existing_props
+M.test_create_props_code = create_props_code
+M.test_insert_props = insert_props
+
 return M

@@ -86,4 +86,9 @@ function M.gen_copy_with()
 	cmds.get_class_at_cursor(insert_copy_with)
 end
 
+-- For testing purposes
+M.test_remove_existing_copy_with = remove_existing_copy_with
+M.test_create_copy_with_code = create_copy_with_code
+M.test_insert_copy_with = insert_copy_with
+
 return M
