@@ -14,6 +14,8 @@ return {
 	config = function()
 		local spells = require("dart-spells")
 
+		vim.keymap.set("n", "key", spells.copy_with, {})
+
 		vim.keymap.set("n", "key", spells.wrap_with_bloc_builder, {})
 
 		vim.keymap.set("n", "key", spells.wrap_with_bloc_consumer, {})
@@ -31,10 +33,19 @@ return {
 }
 ```
 
-
 ## Features
 
-### 1. Widget Wrapping       
+### 1. Copy with
+
+Generate a `copyWith` method for the class under your cursor.
+
+```lua
+require("dart-spells").copy_with()
+```
+
+
+
+### 2. Widget Wrapping       
 
 #### Predefined Functions 
 

@@ -1,0 +1,217 @@
+*dart-spells*    
+
+==============================================================================
+TABLE OF CONTENTS                                *dart-spells-contents*
+==============================================================================
+
+1. Plugin Setup                                  |dart-spells.setup| 
+2. Requirements                                  |dart-spells.requirements|
+3. Utility Functions                             
+   - `copy_with`                                 |dart-spells.copy_with| 
+   - `props`                                     |dart-spells.props|
+4. Custom Widget Wrapping                        |dart-spells.custom-widget-wrapping|
+   - `wrap_with_widget`                          |dart-spells.wrap-with-widget|
+   - `wrap_with_builder`                         |dart-spells.wrap-with-builder|
+5. Predefined Wrapping Functions                 |dart-spells.predefined-wrapping-functions|
+   - `wrap_with_bloc_builder`                    |dart-spells.wrap-with-bloc-builder|
+   - `wrap_with_bloc_consumer`                   |dart-spells.wrap-with-bloc-consumer|
+   - `wrap_with_bloc_listener`                   |dart-spells.wrap-with-bloc-listener|
+   - `wrap_with_bloc_provider`                   |dart-spells.wrap-with-bloc-provider|
+   - `wrap_with_multi_bloc_provider`             |dart-spells.wrap-with-multi-bloc-provider|
+
+==============================================================================
+SETUP															*dart-spells.setup* 
+==============================================================================
+The **dart-spells.setup** is used to configure the Dart Spells plugin.
+It accepts an `opts` table with specific arguments to customize the behavior of the plugin.
+
+## opts
+
+- **dart_spells** (string, optional): Specifies the path to the Dart Spells executable. By default, it is set to dart_spells as if it is added to your system's PATH.  
+  It's not needed for all features, see **dart-spells.requirements** for more details.
+
+- **add_comma_after_index** (number, optional): Defines the index after which the last comma will be added during props generation.  
+  By default, this is `nil` and no comma is added after the last property.
+
+## Usage
+
+require("dart-spells").setup({
+ 	dart_spells = "dart_spells",
+	add_comma_after_index = 3 
+})
+
+==============================================================================
+REQUIREMENTS                                     *dart-spells.requirements* 
+==============================================================================
+Some features of the Dart Spells plugin, as well as planned future features,
+require the `dart-spells` tool from The-Sirius-Black/dart-spells repository.
+
+## Current Features Requiring `dart-spells`
+
+- **copy-with**: Automatically generates the `copyWith` method for your Dart classes.
+- **props**: Assists in generating and `props` for Dart classes
+
+==============================================================================
+PREDEFINED FUNCTIONS                             *dart-spells.predefined-wrapping-functions*
+==============================================================================
+
+The plugin includes several predefined functions to assist with using Bloc. 
+These functions allow quick wrapping of widgets with Bloc-related widgets. 
+The available functions are:
+
+- `wrap_with_bloc_builder`                      |dart-spells-wrap-with-bloc-builder|
+- `wrap_with_bloc_consumer`                     |dart-spells-wrap-with-bloc-consumer|
+- `wrap_with_bloc_listener`                     |dart-spells-wrap-with-bloc-listener|
+- `wrap_with_bloc_provider`                     |dart-spells-wrap-with-bloc-provider|
+- `wrap_with_multi_bloc_provider`               |dart-spells-wrap-with-multi-bloc-provider|
+
+==============================================================================
+WRAP WITH BLOC BUILDER                          *dart-spells.wrap-with-bloc-builder* 
+==============================================================================
+The `*dart-spells.wrap-with-bloc-builder*` command wraps a widget with a `BlocBuilder`.
+
+## Usage
+local spells = require("dart-spells")
+vim.keymap.set("n", "key", spells.wrap_with_bloc_builder, {})
+
+==============================================================================
+WRAP WITH BLOC CONSUMER									*dart-spells.wrap-with-bloc-consumer* 
+==============================================================================
+The `*dart-spells.wrap-with-bloc-consumer*` command wraps a widget with a `BlocConsumer`.
+
+## Usage
+local spells = require("dart-spells")
+vim.keymap.set("n", "key", spells.wrap_with_bloc_consumer, {})
+
+==============================================================================
+WRAP WITH BLOC LISTENER									*dart-spells.wrap-with-bloc-listener* 
+==============================================================================
+The `*dart-spells.wrap-with-bloc-listener*` command wraps a widget with a `BlocListener`.
+
+## Usage
+local spells = require("dart-spells")
+vim.keymap.set("n", "key", spells.wrap_with_bloc_listener, {})
+
+==============================================================================
+WRAP WITH BLOC PROVIDER									*dart-spells.wrap-with-bloc-provider* 
+==============================================================================
+The `*dart-spells.wrap-with-bloc-provider*` command wraps a widget with a `BlocProvider`.
+
+## Usage
+local spells = require("dart-spells")
+vim.keymap.set("n", "key", spells.wrap_with_bloc_provider, {})
+
+==============================================================================
+WRAP WITH MULTI BLOC PROVIDER							*dart-spells.wrap-with-multi-bloc-provider* 
+==============================================================================
+The `*dart-spells.wrap-with-multi-bloc-provider*` command wraps a widget with a `MultiBlocProvider`.
+
+## Usage
+local spells = require("dart-spells")
+vim.keymap.set("n", "key", spells.wrap_with_multi_bloc_provider, {})
+
+==============================================================================
+CUSTOM WIDGET WRAPPING                          *dart-spells-custom-widget-wrapping*
+==============================================================================
+
+The plugin provides two custom functions for widget wrapping:
+
+-  `wrap-with-widget`:                          |dart-spells-wrap-with-widget|
+-  `dart-spells-wrap-with-builder`              |dart-spells-wrap-with-builder| 
+
+-------------------------------------------------------------------------------
+WRAP WITH WIDGET                                *dart-spells-wrap-with-widget*
+-------------------------------------------------------------------------------
+
+The `wrap_with_widget()` function wraps a selected widget with a specified 
+widget structure. It takes two parameters:
+
+- `replacement_text`: A string that specifies the structure to use for wrapping.
+- `callback`: (Optional) A function to perform additional operations after wrapping.
+
+### Example
+
+Input code:
+>
+    Container(
+        child: Text(
+            "Hello, World!"
+        )
+    )
+
+If `replacement_text` is `"MyWidget("`, the resulting code will be:
+>
+    MyWidget(
+        child: Container(
+            child: Text(
+                "Hello, World!"
+            )
+        )
+    )
+
+### Notes
+
+- Automatically adds the `child:` keyword and closing brackets.
+- The rest of the code structure is up to the user.
+
+```dart
+        return Container(
+            child: Text(
+                "Hello, World!"
+            )
+        ),
+    }
+)
+```
+
+-------------------------------------------------------------------------------
+WRAP WITH BUILDER                                        *dart-spells-wrap-with-builder*
+-------------------------------------------------------------------------------
+
+The `wrap_with_builder()` function wraps a selected widget with a specified 
+builder structure. It takes two parameters:
+
+- `replacement_text`: A string specifying the builder structure.
+- `callback`: (Optional) A function to perform additional operations after wrapping.
+
+### Example
+
+Input code:
+>
+    Container(
+        child: Text(
+            "Hello, World!"
+        )
+    )
+
+If `replacement_text` is `"BlocBuilder(builder: (context, state) {"`, the 
+resulting code will be:
+>
+    BlocBuilder(
+        builder: (context, state) {
+            return Container(
+                child: Text(
+                    "Hello, World!"
+                )
+            );
+        },
+    );
+
+### Note
+
+- The function will automatically add the closing bracket and the `return` keyword. 
+- The rest of the code is up to you to fill in as needed.
+
+```dart
+        return Container(
+            child: Text(
+                "Hello, World!"
+            )
+        ),
+    }
+)
+```
+
+
+
+
