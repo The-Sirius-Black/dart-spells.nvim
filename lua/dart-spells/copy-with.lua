@@ -1,22 +1,24 @@
-local utils = require("dart-spells.utils")
+local cmds = require("dart-spells.commands")
 
 local M = {}
 
-local function remove_copy_with(methods)
-	for _, method in ipairs(methods) do
-		if method.name == "copyWith" then
-			vim.api.nvim_buf_set_lines(
-				0,
-				method.range.start_row,
-				method.range.end_row + 1,
-				false,
-				{}
-			)
-		end
+local function remove_existing_copy_with(methods)
+	local copy_with = cmds.filter_func_by_name("copyWith", methods)
+
+	if not copy_with then
+		return
 	end
+
+	vim.api.nvim_buf_set_lines(
+		0,
+		copy_with.range.start_row,
+		copy_with.range.end_row + 1,
+		false,
+		{}
+	)
 end
 
-local function parse_vars(vars)
+local function filter_final_vars(vars)
 	local parsed_vars = {}
 
 	for _, var in ipairs(vars) do
@@ -32,7 +34,8 @@ local function gen_params(vars)
 	local params = ""
 
 	for _, var in ipairs(vars) do
-		params = params .. var.type .. "? " .. var.name .. ","
+		local type = string.gsub(var.type, "?", "")
+		params = params .. type .. "? " .. var.name .. ","
 	end
 
 	return params
@@ -48,7 +51,7 @@ local function gen_args(vars)
 	return args
 end
 
-local function gen_copy_with(class_name, vars)
+local function create_copy_with_code(class_name, vars)
 	local params = gen_params(vars)
 
 	local method_signature = class_name .. " copyWith({"
@@ -61,55 +64,26 @@ local function gen_copy_with(class_name, vars)
 	return method_signature .. method_body .. "}"
 end
 
-local function gen_command()
-	local exePath = utils.get_exe_path()
 
-	local buffer_path = vim.api.nvim_buf_get_name(0)
+local function insert_copy_with(class)
+	local vars = filter_final_vars(class.variables)
 
-	local path = vim.fn.fnamemodify(buffer_path, ":p")
+	local copy_with = create_copy_with_code(class.name, vars)
 
-	local line = vim.api.nvim_win_get_cursor(0)[1]
+	vim.api.nvim_buf_set_lines(
+		0,
+		class.range.end_row,
+		class.range.end_row,
+		false,
+		{ "", copy_with }
+	)
 
-	return exePath .. " --class-at-cursor -r " .. line .. " -p " .. path
+
+	remove_existing_copy_with(class.methods)
 end
 
 function M.gen_copy_with()
-	local command = gen_command()
-
-	local output_buffer = ""
-
-	vim.fn.jobstart(command, {
-		on_stdout = function(_, data, _)
-			output_buffer = output_buffer .. table.concat(data, "")
-		end,
-		on_exit = function(_, exit_code, _)
-			if exit_code == 0 then
-				local success, class = pcall(vim.json.decode, output_buffer)
-
-				if not success then
-					local err_msg = "Failed to decode JSON. Raw data: " .. vim.inspect(output_buffer)
-					vim.notify(err_msg, vim.log.levels.ERROR)
-					return
-				else
-					vim.cmd("write")
-
-					local vars = parse_vars(class.variables)
-
-					local copy_with = gen_copy_with(class.name, vars)
-
-					vim.api.nvim_buf_set_lines(
-						0,
-						class.range.end_row,
-						class.range.end_row,
-						false,
-						{ "", copy_with }
-					)
-
-					remove_copy_with(class.methods)
-				end
-			end
-		end,
-	})
+	cmds.get_class_at_cursor(insert_copy_with)
 end
 
 return M

@@ -2,8 +2,18 @@ local wrap = require("dart-spells.widget_wrapper")
 local utils = require("dart-spells.utils")
 local constants = require("dart-spells.constants")
 local copy_with = require("dart-spells.copy-with")
+local props = require("dart-spells.props")
+local opts = require("dart-spells.opts")
 
 local M = {}
+
+function M.setup(new_opts)
+	opts.setup(new_opts)
+end
+
+function M.props()
+	props.gen_props()
+end
 
 function M.copy_with()
 	copy_with.gen_copy_with()
