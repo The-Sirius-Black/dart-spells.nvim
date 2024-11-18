@@ -43,15 +43,15 @@ Generate a `copyWith` method for the class under your cursor.
 require("dart-spells").copy_with()
 ```
 
-### 1. Copy with
+### 2. Props
 
-Generate a `props` method for the class under your cursor.
+Generate a `props` getter for the class under your cursor.
 
 ```lua
 require("dart-spells").props()
 ```
 
-### 2. Widget Wrapping       
+### 3. Widget Wrapping       
 
 #### Predefined Functions 
 
