@@ -32,6 +32,13 @@ return {
 	end,
 }
 ```
+## Requirements
+Some features of the Dart Spells plugin, as well as planned future features,
+require the [dart-spells](https://github.com/The-Sirius-Black/dart-spells).
+
+Current Features Requiring `dart-spells`:
+- copyWith
+- props 
 
 ## Features
 
